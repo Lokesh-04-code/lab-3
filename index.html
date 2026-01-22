@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magic Color & Size Changer</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f2f5;
+            transition: all 0.5s ease; /* Smoothly animate background and size */
+        }
+
+        /* The Box you want to resize */
+        .text-box {
+            width: 150px;
+            height: 80px;
+            font-size: 20px;
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease; /* Makes resizing look smooth */
+            border: 2px solid #6200ee;
+        }
+
+        .container {
+            text-align: center;
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        button {
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            border-radius: 10px;
+            background: #6200ee;
+            color: white;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        button:hover { transform: scale(1.05); background: #3700b3; }
+
+        .info-panel {
+            margin-top: 20px;
+            font-family: monospace;
+            color: #555;
+            background: #f9f9f9;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="targetBox" class="text-box">Hello</div>
+
+    <div class="container">
+        <h1>Control Panel</h1>
+        
+        <div class="btn-group">
+            <button id="colorBtn">Change Color</button>
+            <button id="textBtn">Change Size</button>
+        </div>
+        
+        <div class="info-panel">
+            <div>Background: <span id="hexValue">#f0f2f5</span></div>
+            <div>Box Size: <span id="sizeValue">150px x 80px</span></div>
+        </div>
+    </div>
+
+    <script>
+        // 1. Selecting Elements
+        const colorBtn = document.getElementById('colorBtn');
+        const textBtn = document.getElementById('textBtn');
+        const targetBox = document.getElementById('targetBox'); // The blue-ish box
+        
+        const hexDisplay = document.getElementById('hexValue');
+        const sizeDisplay = document.getElementById('sizeValue');
+
+        // 2. Color Logic
+        function getRandomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        colorBtn.addEventListener('click', () => {
+            const newColor = getRandomColor();
+            document.body.style.backgroundColor = newColor;
+            hexDisplay.textContent = newColor;
+            hexDisplay.style.color = newColor;
+        });
+
+        // 3. Size Logic
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        textBtn.addEventListener('click', () => {
+            // Generate random values for box and font
+            const newWidth = getRandomInt(100, 300);
+            const newHeight = getRandomInt(50, 150);
+            const newFontSize = getRandomInt(16, 40);
+
+            // Apply to the Div (Size of Div)
+            targetBox.style.width = newWidth + "px";
+            targetBox.style.height = newHeight + "px";
+
+            // Apply to the Content (Size of Content)
+            targetBox.style.fontSize = newFontSize + "px";
+
+            // Update text info
+            sizeDisplay.textContent = `${newWidth}px x ${newHeight}px (Font: ${newFontSize}px)`;
+        });
+    </script>
+</body>
+</html>
